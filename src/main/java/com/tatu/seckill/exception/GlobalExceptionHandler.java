@@ -26,6 +26,7 @@ public class GlobalExceptionHandler {
             ErrorCodeMsg errorCodeMsg = globalException.getErrorCodeMsg();
             return Response.error(errorCodeMsg);
         } else {
+            e.printStackTrace();
             return Response.error(ErrorCodeMsg.SERVER_ERROR);
         }
     }
