@@ -2,6 +2,7 @@ package com.tatu.seckill.service;
 
 import com.tatu.seckill.dao.UserMapper;
 import com.tatu.seckill.domain.User;
+import com.tatu.seckill.exception.GlobalException;
 import com.tatu.seckill.redis.RedisService;
 import com.tatu.seckill.response.ErrorCodeMsg;
 import com.tatu.seckill.util.MD5Util;
@@ -32,16 +33,16 @@ public class UserService {
         return userMapper.insert(user) > 0;
     }
 
-    public ErrorCodeMsg login(String nickname, String password) {
+    public boolean login(String nickname, String password) {
         User user = userMapper.getByNickname(nickname);
         if (user != null) {
             String encryptedPwd = MD5Util.md5(password, user.getSalt());
             if (encryptedPwd.equals(user.getPassword())) {
-                return null;
+                return true;
             }
-            return ErrorCodeMsg.PASSWORD_NOT_MATCH;
+            throw new GlobalException(ErrorCodeMsg.PASSWORD_NOT_MATCH);
         }
 
-        return ErrorCodeMsg.USER_NOT_FOUNT;
+        throw new GlobalException(ErrorCodeMsg.USER_NOT_FOUNT);
     }
 }

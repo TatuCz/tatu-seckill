@@ -32,12 +32,7 @@ public class LoginController {
     @PostMapping("/login")
     @ResponseBody
     public Response<String> doLogin(@Valid LoginVo loginVo) {
-
-        ErrorCodeMsg codeMsg = userService.login(loginVo.getNickname(), loginVo.getPassword());
-        if (codeMsg == null) {
-            return Response.success("登陆成功");
-        }
-
-        return Response.error(codeMsg);
+        boolean res = userService.login(loginVo.getNickname(), loginVo.getPassword());
+        return Response.success("登陆成功,res:" + res);
     }
 }
